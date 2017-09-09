@@ -47,7 +47,6 @@ private:
 		return rect;
 	}
 
-	static constexpr LPTSTR WndProp_DWPHandle = _T("Sunburst.FontScalingControl.DeferWindowPos");
 	static constexpr LPTSTR WndProp_AlreadyScaled = _T("Sunburst.FontScalingControl.AlreadyScaled");
 	HFONT oldFont;
 
@@ -71,13 +70,6 @@ private:
 		float fractionX = (float)newScaleFactor.cx / (float)oldScaleFactor.cx;
 		float fractionY = (float)newScaleFactor.cy / (float)oldScaleFactor.cy;
 
-		// Since I can't tell here exactly how many child controls will be encountered
-		// during the entire recursive traversal, I use a somewhat-large number. RAM
-		// is cheap, and this should be enough for most cases. If it isn't, then the
-		// HDWP will automatically resize itself to store the extra controls.
-		HDWP hDefer = GetProp(pT->m_hWnd, WndProp_DWPHandle);
-		if (hDefer == nullptr) hDefer = ::BeginDeferWindowPos(256);
-
 		HANDLE alreadyScaledFlag = GetProp(pT->m_hWnd, WndProp_AlreadyScaled);
 		if (alreadyScaledFlag == nullptr)
 		{
@@ -93,13 +85,10 @@ private:
 			width = (LONG)roundf(width * fractionX);
 			height = (LONG)roundf(height * fractionY);
 
-			//hDefer = ::DeferWindowPos(hDefer, pT->m_hWnd, nullptr, left, top, width, height, SWP_NOZORDER | SWP_NOACTIVATE);
 			::SetWindowPos(pT->m_hWnd, nullptr, left, top, width, height, SWP_NOZORDER | SWP_NOACTIVATE);
-			ATLASSERT(hDefer != nullptr);
 		}
 
 		SetProp(pT->m_hWnd, WndProp_AlreadyScaled, (HANDLE)1);
-		SetProp(pT->m_hWnd, WndProp_DWPHandle, hDefer);
 
 		for (HWND hChild = ::GetWindow(pT->m_hWnd, GW_CHILD); hChild != nullptr; hChild = ::GetWindow(hChild, GW_HWNDNEXT))
 		{
@@ -117,25 +106,16 @@ private:
 			width = (LONG)roundf(width * fractionX);
 			height = (LONG)roundf(height * fractionY);
 
-			hDefer = ::DeferWindowPos(hDefer, hChild, nullptr, left, top, width, height, SWP_NOZORDER | SWP_NOACTIVATE);
 			::SetWindowPos(hChild, nullptr, left, top, width, height, SWP_NOZORDER | SWP_NOACTIVATE);
-			ATLASSERT(hDefer != nullptr);
 
 			SetProp(hChild, WndProp_AlreadyScaled, (HANDLE)1);
-			SetProp(hChild, WndProp_DWPHandle, hDefer);
-
 			SendMessage(hChild, WM_SETFONT, wParam, lParam);
-
 			RemoveProp(hChild, WndProp_AlreadyScaled);
-			RemoveProp(hChild, WndProp_DWPHandle);
 		}
 
 		RemoveProp(pT->m_hWnd, WndProp_AlreadyScaled);
-		RemoveProp(pT->m_hWnd, WndProp_DWPHandle);
 
-		::EndDeferWindowPos(hDefer);
 		oldFont = newFont;
-
 		handled = false;
 		return 0;
 	}
