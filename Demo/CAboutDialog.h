@@ -3,7 +3,7 @@
 #include <atlbase.h>
 #include <atlcore.h>
 #include <atlwin.h>
-#include "../CFontScalingControl.h"
+#include <CFontScalingControl.h>
 #include "resource.h"
 
 class CAboutDialog :

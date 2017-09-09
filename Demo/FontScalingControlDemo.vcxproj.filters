@@ -21,7 +21,7 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\CFontScalingControl.h">
+    <ClInclude Include="..\include\CFontScalingControl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
