@@ -4,7 +4,7 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE, LPWSTR, int nCmdShow)
 {
 	CAboutDialog dlg;
 	dlg.Create(HWND_DESKTOP);
-	dlg.SetFont(dlg.CreateMessageBoxFont());
+	dlg.SetFont(CAboutDialog::GetMessageBoxFont());
 	dlg.CenterWindow();
 	dlg.ShowWindow(nCmdShow);
 

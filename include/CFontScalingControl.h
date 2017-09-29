@@ -126,15 +126,19 @@ public:
 	END_MSG_MAP();
 
 	// Utility function
-	HFONT CreateMessageBoxFont()
+	static HFONT GetMessageBoxFont()
 	{
-		T* pT = static_cast<T*>(this);
+		static HFONT hFont = nullptr;
 
-		NONCLIENTMETRICS ncm;
-		ZeroMemory(&ncm, sizeof(ncm));
-		ncm.cbSize = sizeof(ncm);
-		SystemParametersInfoForDpi(SPI_GETNONCLIENTMETRICS, ncm.cbSize, &ncm, 0, GetDpiForWindow(pT->m_hWnd));
+		if (hFont == nullptr)
+		{
+			NONCLIENTMETRICS ncm;
+			ZeroMemory(&ncm, sizeof(ncm));
+			ncm.cbSize = sizeof(ncm);
+			SystemParametersInfo(SPI_GETNONCLIENTMETRICS, ncm.cbSize, &ncm, 0);
+			hFont = CreateFontIndirect(&ncm.lfMessageFont);
+		}
 
-		return CreateFontIndirect(&ncm.lfMessageFont);
+		return hFont;
 	}
 };
