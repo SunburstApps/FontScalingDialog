@@ -55,8 +55,6 @@ private:
 		T *pT = static_cast<T*>(this);
 
 		HFONT newFont = (HFONT)wParam;
-		LOGFONTW logFont; ::GetObject(newFont, sizeof(logFont), &logFont);
-
 		if (oldFont == nullptr)
 		{
 			oldFont = newFont;
