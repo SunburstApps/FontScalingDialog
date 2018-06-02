@@ -23,7 +23,7 @@
     <ProjectGuid>{6DEF08D1-70C0-4BD9-A368-E8E23092D1B2}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>FontScalingControlDemo</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
