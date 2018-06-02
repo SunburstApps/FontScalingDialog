@@ -23,7 +23,7 @@ private:
 		if ((textMetric.tmPitchAndFamily & 1) != 0)
 		{
 			LPCTSTR alphabet = _T("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
-			int alphabetLength = _tcslen(alphabet);
+			int alphabetLength = (int)_tcslen(alphabet);
 
 			SIZE extents;
 			GetTextExtentPoint32(hDC, alphabet, alphabetLength, &extents);
